@@ -10,3 +10,7 @@ type Author struct {
 	Name string
 	Books []book.Book
 }
+
+func (Author) TableName() string {
+	return "Author"
+}
