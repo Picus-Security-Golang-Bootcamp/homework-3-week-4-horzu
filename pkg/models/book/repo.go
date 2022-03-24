@@ -2,6 +2,7 @@ package book
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -41,4 +42,21 @@ func (b *BookRepository) InsertSampleData() {
 	for _, book := range books {
 		b.db.FirstOrCreate(&book)
 	}
+}
+
+func (b *BookRepository) GetBookByID(id uint) (*Book, error) {
+	var book Book
+	result := b.db.First(&book, id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil, result.Error
+	}
+
+	return &book, nil
+}
+
+func (b *BookRepository) FindBookByName(title string) []Book {
+	var book []Book
+	b.db.Where("title ILIKE ? ", "%"+title+"%").Find(&book)
+
+	return book
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	postgres "github.com/horzu/golang/picus-security-bootcamp/homework-3-week-4-horzu/pkg/db"
@@ -25,9 +26,16 @@ func main() {
 	// Repositories
 	bookRepo := book.NewBookRepository(db)
 	bookRepo.Migration()
-	bookRepo.InsertSampleData()
+	// bookRepo.InsertSampleData()
+	// fmt.Println(bookRepo.GetBookByID(1))
+	// fmt.Println(bookRepo.FindBookByName("decoder"))
+
 
 	authorRepo := author.NewAuthorRepository(db)
 	authorRepo.Migration()
-	authorRepo.InsertSampleData()
+	// authorRepo.InsertSampleData()
+	// fmt.Println(authorRepo.GetAuthorByID(1))
+	fmt.Println(authorRepo.FindAuthorByName("es"))
+
+
 }

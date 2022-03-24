@@ -2,6 +2,7 @@ package author
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -34,4 +35,21 @@ func (a *AuthorRepository) InsertSampleData() {
 	for _, author := range authors {
 			a.db.FirstOrCreate(&author)
 	}
+}
+
+func (a *AuthorRepository) GetAuthorByID(id uint) (*Author, error) {
+	var author Author
+	result := a.db.First(&author, id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil, result.Error
+	}
+
+	return &author, nil
+}
+
+func (a *AuthorRepository) FindAuthorByName(name string) []Author {
+	var author []Author
+	a.db.Where("name ILIKE ? ", "%"+name+"%").Find(&author)
+
+	return author
 }
