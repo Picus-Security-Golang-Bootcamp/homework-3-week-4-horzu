@@ -9,3 +9,7 @@ type AuthorRepository struct {
 func NewAuthorRepository(db *gorm.DB) *AuthorRepository{
 	return &AuthorRepository{db: db}
 }
+
+func (a *AuthorRepository) Migration() {
+	a.db.AutoMigrate(&Author{})
+}

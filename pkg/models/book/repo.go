@@ -16,3 +16,7 @@ func (b *BookRepository) GetAllBooks() []Book{
 
 	return books
 }
+
+func (b *BookRepository) Migration() {
+	b.db.AutoMigrate(&Book{})
+}
