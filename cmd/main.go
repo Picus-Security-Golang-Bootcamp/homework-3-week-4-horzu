@@ -25,7 +25,9 @@ func main() {
 	// Repositories
 	bookRepo := book.NewBookRepository(db)
 	bookRepo.Migration()
+	bookRepo.InsertSampleData()
 
 	authorRepo := author.NewAuthorRepository(db)
 	authorRepo.Migration()
+	authorRepo.InsertSampleData()
 }

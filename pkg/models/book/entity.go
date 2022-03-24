@@ -14,7 +14,7 @@ type Book struct {
 	Price     string `json:"price"`
 	StockCode string `json:"stockCode"`
 	ISBN      string `json:"ISBN"`
-	AuthorID  uint   `json:"author"`
+	AuthorID  uint   `json:"AuthorID" gorm:"column:author_id"`
 }
 
 func (Book) TableName() string {
