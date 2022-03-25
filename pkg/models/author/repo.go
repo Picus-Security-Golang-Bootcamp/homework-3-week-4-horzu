@@ -94,15 +94,25 @@ func (a *AuthorRepository) DeleteById(id int) error {
 	return nil
 }
 
-func (a *AuthorRepository) GetAuthorsWithBookInformation()  {
-	result, err := a.db.Table("authors").Select("*").Joins("left join books on authors.id = books.author_id").Rows()
-	if err!=nil{
-		return 
-	}
-	for result.Next() {
-		fmt.Println(*result)
-	}
-	
+func (a *AuthorRepository) GetAuthorsWithBookInformation() []AuthorWithBook {
+	var Authors []AuthorWithBook
+	a.db.
+	Table("authors").
+	Select("authors.name, books.title").
+	Joins("left join books on authors.id = books.author_id").
+	Scan(&Authors)
+	return Authors
+}
+
+func (a *AuthorRepository) GetAuthorWithBookInformationByID(id uint) AuthorWithBook {
+	var Author AuthorWithBook
+	a.db.
+	Table("authors").
+	Select("authors.name, books.title").
+	Where("authors.id = ?", id).
+	Joins("left join books on authors.id = books.author_id").
+	Scan(&Author)
+	return Author
 }
 
 func (a *AuthorRepository) FindAll() []Author {
@@ -110,4 +120,22 @@ func (a *AuthorRepository) FindAll() []Author {
 	a.db.Find(&authors)
 
 	return authors
+}
+
+func (a *AuthorRepository) GetAuthorsCount() int {
+	var count int
+	a.db.Raw("SELECT COUNT(authors.id) FROM authors WHERE authors.deleted_at is null").Scan(&count)
+
+	return count
+}
+
+func (a *AuthorRepository) GetDeletedAuthorsWithBookInformation() []AuthorWithBook {
+	var Authors []AuthorWithBook
+	a.db.
+	Table("authors").
+	Select("authors.name, books.title").
+	Where("authors.deleted_at is null").
+	Joins("left join books on authors.id = books.author_id").
+	Scan(&Authors)
+	return Authors
 }

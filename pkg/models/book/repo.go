@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"gorm.io/gorm"
@@ -115,4 +116,78 @@ func (b *BookRepository) FindAll() []Book {
 	b.db.Find(&books)
 
 	return books
+}
+
+func (b *BookRepository) GetBooksWithAuthorInformation() []BookWithAuthor {
+	var Books []BookWithAuthor
+	b.db.
+	Table("books").
+	Select("books.title, authors.name").
+	Joins("left join authors on authors.id = books.author_id").
+	Scan(&Books)
+	return Books
+}
+
+func (b *BookRepository) GetBookWithAuthorInformationByID(id uint) BookWithAuthor {
+	var Books BookWithAuthor
+	b.db.
+	Table("books").
+	Select("books.title, authors.name").
+	Where("books.id = ?", id).
+	Joins("left join authors on authors.id = books.author_id").
+	Scan(&Books)
+	return Books
+}
+
+func (b *BookRepository) GetBooksCount() int {
+	var count int
+	b.db.Raw("SELECT COUNT(books.title)	FROM books WHERE books.deleted_at is null").Scan(&count)
+
+	return count
+}
+
+func (b *BookRepository) GetDeletedBooksWithAuthorInformation() []BookWithAuthor {
+	var Books []BookWithAuthor
+	b.db.
+	Table("books").
+	Select("books.title, authors.name").
+	Where("books.deleted_at is null").
+	Joins("left join authors on authors.id = books.author_id").
+	Scan(&Books)
+	return Books
+}
+
+func (b *BookRepository) GetBooksByPagesLessThenWithAuthorInformation(pages uint) []BookWithAuthor {
+	var Books []BookWithAuthor
+	b.db.
+	Table("books").
+	Select("*").
+	Where("books.page <= ? ", pages).
+	Joins("left join authors on authors.id = books.author_id").
+	Scan(&Books)
+	return Books
+}
+
+func (b *BookRepository) GetStockCodeByTitle(name string) {
+	var Book []Book
+	b.db.
+	Table("books").
+	Select("*").
+	Where("books.title ILIKE ? ", "%"+name+"%").
+	Find(&Book)
+	for _, v := range Book{
+		fmt.Printf("Book: %s, StockCode: %s\n",v.Title, v.StockCode)
+	}
+
+}
+
+func (b *BookRepository) BuyBookByID(id uint, quantity int) Book {
+	book, err := b.GetBookByID(id)
+	if err!=nil{
+		log.Fatal("Book is not available: ",err)
+	} else {
+		book.Stock = book.Stock - int(quantity)
+		b.db.Save(book)
+	}
+	return *book
 }
