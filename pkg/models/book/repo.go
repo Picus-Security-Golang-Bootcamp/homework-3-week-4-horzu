@@ -60,3 +60,43 @@ func (b *BookRepository) FindBookByName(title string) []Book {
 
 	return book
 }
+
+func (b *BookRepository) Create(book Book) error {
+	result := b.db.Create(book)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (b *BookRepository) Update(book Book) error {
+	result := b.db.Save(book)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (b *BookRepository) Delete(book Book) error {
+	result := b.db.Delete(book)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (b *BookRepository) DeleteById(id int) error {
+	result := b.db.Delete(&Book{}, id)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}

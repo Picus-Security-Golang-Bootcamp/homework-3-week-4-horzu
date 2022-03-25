@@ -14,12 +14,12 @@ type Book struct {
 	Price     string `json:"price"`
 	StockCode string `json:"stockCode"`
 	ISBN      string `json:"ISBN"`
-	AuthorID  uint   `json:"AuthorID" gorm:"column:author_id"`
+	AuthorID  uint   `json:"AuthorID" gorm:"column:AuthorID"`
 }
 
-func (Book) TableName() string {
-	return "Book"
-}
+// func (Book) TableName() string {
+// 	return "Book"
+// }
 
 func (b *Book) toString() string {
 	return fmt.Sprintf("ID : %d, Title : %s, Page : %d, Stock : %d, Price : %s, StockCode : %s, ISBN : %s, AuthorID : %d, CreatedAt : %s", 

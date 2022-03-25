@@ -24,18 +24,17 @@ func main() {
 	log.Printf("Connected to Postgres Database.")
 
 	// Repositories
-	bookRepo := book.NewBookRepository(db)
-	bookRepo.Migration()
-	// bookRepo.InsertSampleData()
-	// fmt.Println(bookRepo.GetBookByID(1))
-	// fmt.Println(bookRepo.FindBookByName("decoder"))
-
-
+	
 	authorRepo := author.NewAuthorRepository(db)
 	authorRepo.Migration()
-	// authorRepo.InsertSampleData()
+	authorRepo.InsertSampleData()
 	// fmt.Println(authorRepo.GetAuthorByID(1))
 	fmt.Println(authorRepo.FindAuthorByName("es"))
 
+	bookRepo := book.NewBookRepository(db)
+	bookRepo.Migration()
+	bookRepo.InsertSampleData()
+	// fmt.Println(bookRepo.GetBookByID(1))
+	fmt.Println(bookRepo.FindBookByName("decoder"))
 
 }

@@ -14,7 +14,7 @@ type AuthorRepository struct {
 	db *gorm.DB
 }
 
-func NewAuthorRepository(db *gorm.DB) *AuthorRepository{
+func NewAuthorRepository(db *gorm.DB) *AuthorRepository {
 	return &AuthorRepository{db: db}
 }
 
@@ -29,11 +29,11 @@ func (a *AuthorRepository) InsertSampleData() {
 	}
 	defer jsonFile.Close()
 	values, _ := ioutil.ReadAll(jsonFile)
-	authors := 	[]Author{}
-	json.Unmarshal(values, &authors) 
+	authors := []Author{}
+	json.Unmarshal(values, &authors)
 
 	for _, author := range authors {
-			a.db.FirstOrCreate(&author)
+		a.db.FirstOrCreate(&author)
 	}
 }
 
@@ -52,4 +52,44 @@ func (a *AuthorRepository) FindAuthorByName(name string) []Author {
 	a.db.Where("name ILIKE ? ", "%"+name+"%").Find(&author)
 
 	return author
+}
+
+func (a *AuthorRepository) Create(author Author) error {
+	result := a.db.Create(author)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (a *AuthorRepository) Update(author Author) error {
+	result := a.db.Save(author)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (a *AuthorRepository) Delete(author Author) error {
+	result := a.db.Delete(author)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (a *AuthorRepository) DeleteById(id int) error {
+	result := a.db.Delete(&Author{}, id)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }
