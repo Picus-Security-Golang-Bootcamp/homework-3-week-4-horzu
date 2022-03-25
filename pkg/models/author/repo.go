@@ -104,3 +104,10 @@ func (a *AuthorRepository) GetAuthorsWithBookInformation()  {
 	}
 	
 }
+
+func (a *AuthorRepository) FindAll() []Author {
+	var authors []Author
+	a.db.Find(&authors)
+
+	return authors
+}

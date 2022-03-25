@@ -109,3 +109,10 @@ func (b *BookRepository) GetAllBooksWithAuthorInformation() ([]Book, error) {
 	}
 	return book, nil
 }
+
+func (b *BookRepository) FindAll() []Book {
+	var books []Book
+	b.db.Find(&books)
+
+	return books
+}
