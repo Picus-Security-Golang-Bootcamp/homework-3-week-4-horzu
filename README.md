@@ -1,10 +1,31 @@
-# Homework 3 Week 4
+# Database GORM Manipulation
 
-- `Book` ve `Author` bilgileri bir dosyadan okunacak ve DB'ye kayıt edilecek.
-- `list`, `search`, `delete(soft-delete)`, `buy` gibi `os.Args` komutları yerine DB sorguları yazılacak. 
-- Bu 2 modelle alakalı GORM sorguları yazılacak.
-  - GetByID
-  - FindByName
-  - GetBooksWithAuthor
-  - GetAuthorWithBooks etc. (GORM dökümantasyondaki sorgu çeşitlerine bakılacak bu 2 modelde uygulanacak)
-  - (Sadece 4 sorgu değil olabildiğince sorgu yazıp kendinizi geliştirin. Bu size artı olarak dönüş olacaktır.)
+A terminal app that executes commands in main.go.
+
+## Table of Contents
+
+* [Setup](#setup)
+* [Usage](#usage)
+* [Contact](#contact)
+* [License](#license)
+## Setup
+
+To run this project you must have Golang installed in your PC.
+
+## Usage
+
+To run querries in the main.go file, uncomment the selected query line and type the command below.
+
+```dash
+go run cmd/main.go
+```
+
+There are lots of querries in main.go to run.
+
+## Contact
+
+Created by [@horzu](https://horzu.github.io/) - feel free to contact me!
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
