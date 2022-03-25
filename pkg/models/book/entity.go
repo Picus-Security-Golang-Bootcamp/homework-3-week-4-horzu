@@ -3,6 +3,7 @@ package book
 import (
 	"fmt"
 
+	"github.com/horzu/golang/picus-security-bootcamp/homework-3-week-4-horzu/pkg/models/author"
 	"gorm.io/gorm"
 )
 
@@ -14,7 +15,8 @@ type Book struct {
 	Price     string `json:"price"`
 	StockCode string `json:"stockCode"`
 	ISBN      string `json:"ISBN"`
-	AuthorID  uint   `json:"AuthorID" gorm:"column:AuthorID"`
+	AuthorID  uint   `json:"AuthorID"`
+	Authors []author.Author `gorm:"foreignKey:id; references:AuthorID"`
 }
 
 // func (Book) TableName() string {

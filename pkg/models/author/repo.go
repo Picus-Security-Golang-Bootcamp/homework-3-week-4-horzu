@@ -93,3 +93,14 @@ func (a *AuthorRepository) DeleteById(id int) error {
 
 	return nil
 }
+
+func (a *AuthorRepository) GetAuthorsWithBookInformation()  {
+	result, err := a.db.Table("authors").Select("*").Joins("left join books on authors.id = books.author_id").Rows()
+	if err!=nil{
+		return 
+	}
+	for result.Next() {
+		fmt.Println(*result)
+	}
+	
+}

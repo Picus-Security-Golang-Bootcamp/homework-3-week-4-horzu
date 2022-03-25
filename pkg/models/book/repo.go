@@ -100,3 +100,12 @@ func (b *BookRepository) DeleteById(id int) error {
 
 	return nil
 }
+
+func (b *BookRepository) GetAllBooksWithAuthorInformation() ([]Book, error) {
+	var book []Book
+	result := b.db.Preload("Authors").Find(&book)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return book, nil
+}
